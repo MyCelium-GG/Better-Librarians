@@ -21,6 +21,8 @@ public final class BetterLibrariansMod {
 
     public static final ModMetadata META = ModMetadata.builder(ID, "Better Librarians", "1.0.1")
             .author("MyCelium")
+            .website("https://www.curseforge.com/minecraft/mc-mods/better-librarians")
+            .updateUrl("https://wiki.mycelium-gg.org/updates/betterlibrarians.json")
             .build();
 
     public static ConfigValue<Boolean> enabled;
