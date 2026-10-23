@@ -5,6 +5,7 @@ import java.util.List;
 
 import my.celium.org.betterlibrarians.VillagerDataStore;
 import my.celium.org.betterlibrarians.BetterLibrariansMod;
+import my.celium.org.client.MycelTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -28,14 +29,14 @@ import net.minecraft.world.phys.HitResult;
  * instead, so the mechanic is discoverable. Client only.
  */
 public final class LookTitleCard {
-    static final int COLOR_TITLE = 0xFFFFFF55;
+    static final int COLOR_TITLE = MycelTheme.ACCENT;
     /** Base color for parsed renames (styled spans override it). */
-    static final int COLOR_NAME_FALLBACK = 0xFFFFFFFF;
-    static final int COLOR_SUBTITLE = 0xFFAAAAAA;
-    static final int COLOR_BOOK = 0xFFFFFFFF;
-    static final int COLOR_BOOK_MAX = 0xFFFFFF55;
-    static final int COLOR_HINT = 0xFFAAAAAA;
-    static final int COLOR_MORE = 0xFFAAAAAA;
+    static final int COLOR_NAME_FALLBACK = MycelTheme.HEADING;
+    static final int COLOR_SUBTITLE = MycelTheme.DIM;
+    static final int COLOR_BOOK = MycelTheme.TEXT;
+    static final int COLOR_BOOK_MAX = MycelTheme.WARN;
+    static final int COLOR_HINT = MycelTheme.DIM;
+    static final int COLOR_MORE = MycelTheme.DIM;
     static final int BOX_COLOR = 0xC0000000;
 
     static final int TOP_Y = 14;

@@ -6,6 +6,14 @@ Better Librarians is versioned semantically (`MAJOR.MINOR.PATCH`).
 It runs on Minecraft 26.3 (Fabric + Forge + NeoForge, Java 25) and requires
 [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`).
 
+## [1.0.3] - Unreleased
+
+### Changed
+
+- Requires Mycel 1.3.1. The look-at card uses the MyCelium wiki colors
+  (red title, orange max-level books, wiki greys) instead of legacy yellow
+  and grey.
+
 ## [1.0.2] - 2026-10-19
 
 ### Changed
