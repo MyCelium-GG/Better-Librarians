@@ -3,6 +3,7 @@ package my.celium.org.betterlibrarians;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -54,5 +55,27 @@ class VillagerDataStoreTest {
                 "{\"villagers\":{\"nope\":{\"name\":\"x\"}}}");
         VillagerDataStore.load(dir);
         assertEquals(0, VillagerDataStore.namedEntries().size());
+    }
+
+    @Test
+    void brokenFileIsKeptInsteadOfOverwritten(@TempDir Path dir) throws Exception {
+        Path data = dir.resolve(VillagerDataStore.FILE_NAME);
+        Files.writeString(data, "{ \"villagers\": [ broken");
+        VillagerDataStore.load(dir);
+        UUID id = UUID.randomUUID();
+        VillagerDataStore.setName(id, "Alfred");
+        assertEquals("{ \"villagers\": [ broken",
+                Files.readString(dir.resolve(VillagerDataStore.FILE_NAME + ".broken")));
+        assertEquals("Alfred", VillagerDataStore.getName(id));
+    }
+
+    @Test
+    void nullBooksDoNotWipeTheFile(@TempDir Path dir) throws Exception {
+        UUID id = UUID.randomUUID();
+        Files.writeString(dir.resolve(VillagerDataStore.FILE_NAME),
+                "{ \"villagers\": { \"" + id + "\": { \"name\": \"Bea\", \"books\": null } } }");
+        VillagerDataStore.load(dir);
+        assertEquals("Bea", VillagerDataStore.getName(id));
+        assertEquals(List.of(), VillagerDataStore.getBooks(id));
     }
 }

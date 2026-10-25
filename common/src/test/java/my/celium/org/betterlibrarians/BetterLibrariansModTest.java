@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import my.celium.org.Mycel;
-import my.celium.org.internal.PlatformHolder;
 import my.celium.org.betterlibrarians.client.LookTitleCard;
+import my.celium.org.testing.MycelTesting;
 
 /** The mod boots on Mycel with a tiny, well-defaulted config. */
 class BetterLibrariansModTest {
     @BeforeAll
     static void initOnce(@TempDir Path tempDir) {
-        PlatformHolder.setForTesting(new BetterLibrariansTestPlatform(tempDir));
+        MycelTesting.useConfigDir(tempDir);
         BetterLibrariansMod.init();
     }
 

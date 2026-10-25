@@ -1,10 +1,5 @@
 package my.celium.org.betterlibrarians;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,10 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import my.celium.org.Mycel;
+import my.celium.org.data.MycelDataFile;
 import my.celium.org.logging.MycelLog;
 
 /**
@@ -24,18 +17,16 @@ import my.celium.org.logging.MycelLog;
  *
  * <p>Lives in {@code config/betterlibrarians_data.json} (alongside Mycel's
  * own config dir), so renames and catalogues survive restarts. Small enough
- * to rewrite wholesale on every mutation. No Minecraft classes - only Gson
- * and files - so it is fully unit-testable.
+ * to rewrite wholesale on every mutation. {@link MycelDataFile} keeps a
+ * broken file aside instead of letting the next save overwrite it.
  */
 public final class VillagerDataStore {
     static final String FILE_NAME = "betterlibrarians_data.json";
     /** Maximum villagers kept; oldest entries are dropped first. */
     static final int MAX_VILLAGERS = 256;
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
     private static final Map<String, StoredVillager> DATA = new LinkedHashMap<>();
-    private static Path loadedFrom;
+    private static MycelDataFile file;
 
     private VillagerDataStore() {
     }
@@ -73,7 +64,7 @@ public final class VillagerDataStore {
         public List<StoredBook> books = new ArrayList<>();
 
         public boolean isEmpty() {
-            return (name == null || name.isBlank()) && books.isEmpty();
+            return (name == null || name.isBlank()) && (books == null || books.isEmpty());
         }
     }
 
@@ -93,28 +84,30 @@ public final class VillagerDataStore {
     /** Loads from an explicit directory (used by tests). */
     public static synchronized void load(Path dir) {
         DATA.clear();
-        loadedFrom = dir == null ? null : dir.resolve(FILE_NAME);
-        if (loadedFrom == null || !Files.isRegularFile(loadedFrom)) {
+        file = dir == null ? null : MycelDataFile.at(BetterLibrariansMod.META, dir.resolve(FILE_NAME));
+        if (file == null) {
             return;
         }
-        try (Reader reader = Files.newBufferedReader(loadedFrom, StandardCharsets.UTF_8)) {
-            Root root = GSON.fromJson(reader, Root.class);
-            if (root != null && root.villagers != null) {
-                for (Map.Entry<String, StoredVillager> entry : root.villagers.entrySet()) {
-                    try {
-                        UUID.fromString(entry.getKey());
-                    } catch (IllegalArgumentException bad) {
-                        continue;
-                    }
-                    if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-                        DATA.put(entry.getKey(), entry.getValue());
-                    }
+        Root root = file.read(Root.class, Root::new);
+        if (root.villagers != null) {
+            for (Map.Entry<String, StoredVillager> entry : root.villagers.entrySet()) {
+                try {
+                    UUID.fromString(entry.getKey());
+                } catch (IllegalArgumentException bad) {
+                    continue;
+                }
+                StoredVillager villager = entry.getValue();
+                if (villager == null) {
+                    continue;
+                }
+                if (villager.books == null) {
+                    villager.books = new ArrayList<>();
+                }
+                villager.books.removeIf(Objects::isNull);
+                if (!villager.isEmpty()) {
+                    DATA.put(entry.getKey(), villager);
                 }
             }
-        } catch (Exception e) {
-            MycelLog.warnMod(BetterLibrariansMod.ID, "Could not read villager data, starting fresh: {}",
-                    e.toString());
-            DATA.clear();
         }
     }
 
@@ -180,7 +173,7 @@ public final class VillagerDataStore {
     /** Forgets everything (used by tests). Does not touch disk. */
     static synchronized void clearForTesting() {
         DATA.clear();
-        loadedFrom = null;
+        file = null;
     }
 
     private static void prune(String keepKey) {
@@ -199,18 +192,11 @@ public final class VillagerDataStore {
     }
 
     private static void save() {
-        if (loadedFrom == null) {
+        if (file == null) {
             return;
         }
-        try {
-            Files.createDirectories(loadedFrom.getParent());
-            Root root = new Root();
-            root.villagers.putAll(DATA);
-            try (Writer writer = Files.newBufferedWriter(loadedFrom, StandardCharsets.UTF_8)) {
-                GSON.toJson(root, writer);
-            }
-        } catch (IOException | RuntimeException e) {
-            MycelLog.warnMod(BetterLibrariansMod.ID, "Could not save villager data: {}", e.toString());
-        }
+        Root root = new Root();
+        root.villagers.putAll(DATA);
+        file.write(root);
     }
 }

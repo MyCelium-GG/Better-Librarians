@@ -19,7 +19,7 @@ import my.celium.org.metadata.ModMetadata;
 public final class BetterLibrariansMod {
     public static final String ID = "betterlibrarians";
 
-    public static final ModMetadata META = ModMetadata.builder(ID, "Better Librarians", "1.0.3")
+    public static final ModMetadata META = ModMetadata.builder(ID, "Better Librarians", "1.0.4")
             .author("MyCelium")
             .website("https://www.curseforge.com/minecraft/mc-mods/better-librarians")
             .updateUrl("https://wiki.mycelium-gg.org/updates/betterlibrarians.json")
