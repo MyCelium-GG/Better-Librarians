@@ -5,6 +5,7 @@ import java.util.List;
 
 import my.celium.org.betterlibrarians.VillagerDataStore;
 import my.celium.org.betterlibrarians.BetterLibrariansMod;
+import my.celium.org.client.MycelScreens;
 import my.celium.org.client.MycelTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -68,7 +69,7 @@ public final class LookTitleCard {
         if (minecraft == null || minecraft.player == null || minecraft.level == null) {
             return;
         }
-        if (minecraft.gui.screen() != null) {
+        if (MycelScreens.current() != null) {
             return;
         }
         if (!(minecraft.hitResult instanceof EntityHitResult entityHit)) {

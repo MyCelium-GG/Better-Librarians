@@ -8,5 +8,5 @@ floating in-world names.
 - Crosshair title card: profession, level and each enchanted book
 - Gold for max-level, white otherwise; catalogued on first trade, persisted
 
-Requires **Mycel**. Needs Fabric Loader, Fabric API, Minecraft 26.3, Java 25.
+Requires **Mycel**. Needs Fabric Loader, Fabric API, Minecraft 26.3, 26.2 or 26.1 (26.1-26.1.2), Java 25.
 MIT license.

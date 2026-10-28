@@ -32,7 +32,7 @@ public final class BetterLibrariansFabricClient implements ClientModInitializer 
         VillagerDataStore.load();
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (screen instanceof MerchantScreen merchant) {
-                ScreenEvents.afterForeground(merchant).register(
+                ScreenEvents.afterExtract(merchant).register(
                         (current, gfx, mouseX, mouseY, tick) -> VillagerCatalog.recordScreen(merchant));
             }
         });
