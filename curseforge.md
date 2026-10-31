@@ -1,15 +1,13 @@
 # Better Librarians
 
-Look at a librarian, see their books. A small title card lists every enchanted book a villager trades, with no trading screen and no hovering. Rename villagers with colorful floating names. No keybinds.
+Look at a librarian, see their books and prices on a small card, with no trading screen. Then press K to search everyone you've traded with: type "mending" to see who sells it, cheapest first, and make them glow so you can find them.
 
-![A card above a librarian lists Mending, Sharpness V, Efficiency IV and Feather Falling III](https://wiki.mycelium-gg.org/betterlibrarians/img/card.jpg)
-
-- Crosshair title card with profession, level and each enchanted book
+- Card with profession, level, each enchanted book and its emerald price
 - Gold for max-level books, white for the rest
+- Librarian list on K or `/librarians`, nearest first, with distance and direction
 - Villagers are catalogued on first trade, and the data survives restarts
+- Kept per world and server, so lists don't mix
 - `/vname <name>` renames the villager you look at (`&` codes and `&#RRGGBB`), `/vname clear` removes it
-
-![Three villagers with colored floating names](https://wiki.mycelium-gg.org/betterlibrarians/img/names.png)
 
 ## Install
 

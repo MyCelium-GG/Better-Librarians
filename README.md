@@ -2,10 +2,10 @@
 
 [![License](https://img.shields.io/github/license/MyCelium-GG/MyCel-Lib)](LICENSE)
 
-Look at a librarian, see their books. A small title card lists every
-enchanted book a villager trades — no trading GUI, no hovering required.
-Rename villagers with colorful names floating above their heads. Client side,
-no keybinds.
+Look at a librarian, see their books and prices on a small card, with no
+trading screen. Search every librarian you have traded with to find who sells
+Mending, cheapest first, and make them glow. Rename villagers with colorful
+names floating above their heads. Client side.
 
 Built on [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`), the shared
 core for the MyCelium ecosystem: configuration, platform abstraction and
@@ -19,13 +19,23 @@ diagnostics are reused.
 
 ## Behavior
 
-- Point your crosshair at a librarian: a centered title card shows their
-  profession and level (e.g. `Librarian · Apprentice`) plus each enchanted
-  book they sell (e.g. `Sharpness V`). Other professions show no card.
+- Point your crosshair at a librarian: a card shows their profession and
+  level (e.g. `Librarian · Apprentice`) plus each enchanted book they sell
+  (e.g. `Sharpness V`) and its emerald price when you last traded. Other
+  professions show no card.
 - Max-level books render in gold, lower levels in white.
 - The client only learns a villager's trades when their trading screen is
   open, so each villager is catalogued the first time you trade with them.
 - Catalogues and renames persist in `config/betterlibrarians_data.json`.
+
+## The librarian list
+
+Press **K** (rebindable under Controls, Gameplay) or run `/librarians`. Every
+librarian you have traded with in this world or server is listed, nearest
+first, with distance and direction. Type a book to see who sells it, cheapest
+first. **Find** makes a nearby librarian glow for 30 seconds, and **Forget**
+removes one from the list. Librarians catalogued before this version show their
+price and place after you next trade with them.
 
 ## Renaming (`/vname`)
 
@@ -66,4 +76,4 @@ JDK 25, then:
 
 Mycel itself comes from [JitPack](https://jitpack.io/#MyCelium-GG/MyCel-Lib)
 as one universal jar for all loaders
-(`com.github.MyCelium-GG:MyCel-Lib:1.4.0`). No local setup needed.
+(the version is `mycel_version` in `gradle.properties`). No local setup needed.

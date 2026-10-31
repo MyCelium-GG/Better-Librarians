@@ -78,4 +78,26 @@ class VillagerDataStoreTest {
         assertEquals("Bea", VillagerDataStore.getName(id));
         assertEquals(List.of(), VillagerDataStore.getBooks(id));
     }
+
+    @Test
+    void remembersPriceAndPlaceThenForgets() {
+        java.util.UUID id = java.util.UUID.randomUUID();
+        VillagerDataStore.setBooks(id, java.util.List.of(new VillagerDataStore.StoredBook("Mending", true, 24)));
+        VillagerDataStore.setLocation(id, "world:w", "minecraft:overworld", 1, 2, 3);
+        VillagerDataStore.StoredVillager stored = VillagerDataStore.entries().get(id.toString());
+        org.junit.jupiter.api.Assertions.assertEquals(24, stored.books.get(0).cost);
+        org.junit.jupiter.api.Assertions.assertEquals("minecraft:overworld", stored.dimension);
+        VillagerDataStore.forgetBooks(id);
+        org.junit.jupiter.api.Assertions.assertNull(VillagerDataStore.entries().get(id.toString()));
+    }
+
+    @Test
+    void forgettingKeepsARename() {
+        java.util.UUID id = java.util.UUID.randomUUID();
+        VillagerDataStore.setName(id, "Bob");
+        VillagerDataStore.setBooks(id, java.util.List.of(new VillagerDataStore.StoredBook("Mending", true, 24)));
+        VillagerDataStore.forgetBooks(id);
+        org.junit.jupiter.api.Assertions.assertEquals("Bob", VillagerDataStore.getName(id));
+        org.junit.jupiter.api.Assertions.assertTrue(VillagerDataStore.getBooks(id).isEmpty());
+    }
 }

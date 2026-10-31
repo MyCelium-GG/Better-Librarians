@@ -31,17 +31,24 @@ public final class VillagerDataStore {
     private VillagerDataStore() {
     }
 
-    /** One catalogued book: display text plus whether it is max level. */
+    /** One catalogued book: display text, whether it is max level, and its price. */
     public static final class StoredBook {
         public String text = "";
         public boolean maxLevel;
+        /** Emeralds when last traded with; 0 when unknown (catalogued before prices existed). */
+        public int cost;
 
         public StoredBook() {
         }
 
         public StoredBook(String text, boolean maxLevel) {
+            this(text, maxLevel, 0);
+        }
+
+        public StoredBook(String text, boolean maxLevel, int cost) {
             this.text = text == null ? "" : text;
             this.maxLevel = maxLevel;
+            this.cost = Math.max(0, cost);
         }
 
         @Override
@@ -49,19 +56,25 @@ public final class VillagerDataStore {
             if (!(other instanceof StoredBook that)) {
                 return false;
             }
-            return maxLevel == that.maxLevel && Objects.equals(text, that.text);
+            return maxLevel == that.maxLevel && cost == that.cost && Objects.equals(text, that.text);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(text, maxLevel);
+            return Objects.hash(text, maxLevel, cost);
         }
     }
 
-    /** One stored villager: optional rename plus catalogued books. */
+    /** One stored villager: optional rename, catalogued books and where they were traded with. */
     public static final class StoredVillager {
         public String name;
         public List<StoredBook> books = new ArrayList<>();
+        /** The server or singleplayer world, {@code null} until traded with since locations existed. */
+        public String world;
+        public String dimension;
+        public int x;
+        public int y;
+        public int z;
 
         public boolean isEmpty() {
             return (name == null || name.isBlank()) && (books == null || books.isEmpty());
@@ -157,6 +170,41 @@ public final class VillagerDataStore {
         prune(id.toString());
         save();
         return true;
+    }
+
+    /** Remembers where a villager was traded with. Persists when it changed. */
+    public static synchronized void setLocation(UUID id, String world, String dimension, int x, int y, int z) {
+        StoredVillager stored = id == null ? null : DATA.get(id.toString());
+        if (stored == null || (Objects.equals(world, stored.world) && Objects.equals(dimension, stored.dimension)
+                && x == stored.x && y == stored.y && z == stored.z)) {
+            return;
+        }
+        stored.world = world;
+        stored.dimension = dimension;
+        stored.x = x;
+        stored.y = y;
+        stored.z = z;
+        save();
+    }
+
+    /** Forgets a villager's books and location, keeping a rename. Persists. */
+    public static synchronized void forgetBooks(UUID id) {
+        StoredVillager stored = id == null ? null : DATA.get(id.toString());
+        if (stored == null) {
+            return;
+        }
+        stored.books = new ArrayList<>();
+        stored.world = null;
+        stored.dimension = null;
+        if (stored.isEmpty()) {
+            DATA.remove(id.toString());
+        }
+        save();
+    }
+
+    /** Snapshot of uuid-string to villager for everyone stored. */
+    public static synchronized Map<String, StoredVillager> entries() {
+        return new LinkedHashMap<>(DATA);
     }
 
     /** Snapshot of uuid-string to raw name for every renamed villager. */

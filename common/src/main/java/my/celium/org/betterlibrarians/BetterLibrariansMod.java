@@ -12,8 +12,8 @@ import my.celium.org.metadata.ModMetadata;
  *
  * <p>Client-side only. {@link #init()} registers metadata and config with
  * Mycel; each loader's <em>client</em> entrypoint then (a) catalogues trade
- * offers whenever a villager trading screen is open, and (b) draws the title
- * card through its native HUD hook. Dedicated servers never touch client
+ * offers whenever a villager trading screen is open, (b) draws the title
+ * card through its native HUD hook, and (c) registers the librarian list. Dedicated servers never touch client
  * classes.
  */
 public final class BetterLibrariansMod {

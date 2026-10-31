@@ -17,14 +17,14 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
  */
 @Mod(BetterLibrariansMod.ID)
 public final class BetterLibrariansNeoForge {
-    public BetterLibrariansNeoForge(@SuppressWarnings("unused") IEventBus modBus,
+    public BetterLibrariansNeoForge(IEventBus modBus,
             @SuppressWarnings("unused") ModContainer container) {
         BetterLibrariansMod.init();
         if (FMLEnvironment.getDist().isClient()) {
             ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,
                     () -> (ModContainer ignored, Screen parent) -> ClientHooks.createConfigScreen(parent,
                             BetterLibrariansMod.ID));
-            ClientBetterLibrarians.register();
+            ClientBetterLibrarians.register(modBus);
         }
     }
 }

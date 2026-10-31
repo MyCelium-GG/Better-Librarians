@@ -6,14 +6,15 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 
 import my.celium.org.betterlibrarians.VillagerDataStore;
 import my.celium.org.betterlibrarians.BetterLibrariansMod;
+import my.celium.org.betterlibrarians.client.LibrarianClient;
 import my.celium.org.betterlibrarians.client.LookTitleCard;
-import my.celium.org.betterlibrarians.client.NameplateSync;
 import my.celium.org.betterlibrarians.client.RenameActions;
 import my.celium.org.betterlibrarians.client.VillagerCatalog;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
@@ -30,6 +31,7 @@ public final class BetterLibrariansFabricClient implements ClientModInitializer 
     @Override
     public void onInitializeClient() {
         VillagerDataStore.load();
+        KeyMappingHelper.registerKeyMapping(LibrarianClient.OPEN_KEY);
         ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
             if (screen instanceof MerchantScreen merchant) {
                 ScreenEvents.afterExtract(merchant).register(
@@ -37,9 +39,13 @@ public final class BetterLibrariansFabricClient implements ClientModInitializer 
             }
         });
         HudElementRegistry.addLast(HUD_ID, (gfx, tracker) -> LookTitleCard.render(gfx));
-        ClientTickEvents.END_CLIENT_TICK.register(client -> NameplateSync.tickClient(client));
+        ClientTickEvents.END_CLIENT_TICK.register(client -> LibrarianClient.tick(client));
         ClientCommandRegistrationCallback.EVENT.register(
-                (dispatcher, registryAccess) -> dispatcher.register(buildCommand()));
+                (dispatcher, registryAccess) -> {
+                    dispatcher.register(buildCommand());
+                    dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal(LibrarianClient.COMMAND)
+                            .executes(context -> LibrarianClient.requestList()));
+                });
     }
 
     private static LiteralArgumentBuilder<FabricClientCommandSource> buildCommand() {

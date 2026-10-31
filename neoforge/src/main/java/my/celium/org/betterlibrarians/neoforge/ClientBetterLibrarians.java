@@ -4,8 +4,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import my.celium.org.betterlibrarians.VillagerDataStore;
+import my.celium.org.betterlibrarians.client.LibrarianClient;
 import my.celium.org.betterlibrarians.client.LookTitleCard;
-import my.celium.org.betterlibrarians.client.NameplateSync;
 import my.celium.org.betterlibrarians.client.RenameActions;
 import my.celium.org.betterlibrarians.client.VillagerCatalog;
 import net.minecraft.client.Minecraft;
@@ -16,6 +16,8 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 public final class ClientBetterLibrarians {
@@ -26,8 +28,9 @@ public final class ClientBetterLibrarians {
     private ClientBetterLibrarians() {
     }
 
-    public static void register() {
+    public static void register(IEventBus modBus) {
         VillagerDataStore.load();
+        modBus.addListener((RegisterKeyMappingsEvent event) -> event.register(LibrarianClient.OPEN_KEY));
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRenderForeground);
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRenderGui);
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onClientTick);
@@ -45,11 +48,13 @@ public final class ClientBetterLibrarians {
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
-        NameplateSync.tickClient(Minecraft.getInstance());
+        LibrarianClient.tick(Minecraft.getInstance());
     }
 
     private static void onRegisterCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(buildCommand());
+        event.getDispatcher().register(Commands.literal(LibrarianClient.COMMAND)
+                .executes(context -> LibrarianClient.requestList()));
     }
 
     private static LiteralArgumentBuilder<CommandSourceStack> buildCommand() {

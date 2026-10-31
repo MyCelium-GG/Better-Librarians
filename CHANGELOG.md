@@ -6,6 +6,26 @@ Better Librarians is versioned semantically (`MAJOR.MINOR.PATCH`).
 It runs on Minecraft 26.3, 26.2 and 26.1 (Fabric + Forge + NeoForge, Java 25) and requires
 [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`).
 
+## [Unreleased]
+
+### Added
+
+- A librarian list on **K** or `/librarians`: everyone you have traded with in
+  this world or server, with distance and direction. Search a book to see who
+  sells it, cheapest first. Find makes a nearby one glow for 30 seconds.
+- The card and the list show each book's emerald price from your last trade.
+
+### Changed
+
+- The card has a new look with book and emerald icons.
+
+### Fixed
+
+- In a trading hall, books could be saved under a different villager standing
+  closer than the one you traded with. They now go to the villager you are
+  looking at. Librarians affected keep the wrong books until you trade with them
+  again.
+
 ## [1.1.0] - 2026-10-28
 
 ### Added

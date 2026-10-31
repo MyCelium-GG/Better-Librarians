@@ -5,8 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import my.celium.org.betterlibrarians.VillagerDataStore;
 import my.celium.org.betterlibrarians.BetterLibrariansMod;
+import my.celium.org.betterlibrarians.client.LibrarianClient;
 import my.celium.org.betterlibrarians.client.LookTitleCard;
-import my.celium.org.betterlibrarians.client.NameplateSync;
 import my.celium.org.betterlibrarians.client.RenameActions;
 import my.celium.org.betterlibrarians.client.VillagerCatalog;
 import net.minecraft.client.Minecraft;
@@ -17,6 +17,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
 
 public final class ClientBetterLibrarians {
@@ -32,6 +33,7 @@ public final class ClientBetterLibrarians {
 
     public static void register() {
         VillagerDataStore.load();
+        RegisterKeyMappingsEvent.BUS.addListener(event -> event.register(LibrarianClient.OPEN_KEY));
         ContainerScreenEvent.Render.Foreground.BUS.addListener(ClientBetterLibrarians::onRenderForeground);
         AddGuiOverlayLayersEvent.BUS.addListener(ClientBetterLibrarians::onAddLayers);
         TickEvent.ClientTickEvent.Post.BUS.addListener(ClientBetterLibrarians::onClientTick);
@@ -49,11 +51,13 @@ public final class ClientBetterLibrarians {
     }
 
     private static void onClientTick(TickEvent.ClientTickEvent.Post event) {
-        NameplateSync.tickClient(Minecraft.getInstance());
+        LibrarianClient.tick(Minecraft.getInstance());
     }
 
     private static void onRegisterCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(buildCommand());
+        event.getDispatcher().register(Commands.literal(LibrarianClient.COMMAND)
+                .executes(context -> LibrarianClient.requestList()));
     }
 
     private static LiteralArgumentBuilder<CommandSourceStack> buildCommand() {

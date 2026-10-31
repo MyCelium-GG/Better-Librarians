@@ -15,9 +15,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 
 /**
  * Client-side catalogue of villagers' enchanted books, backed by
@@ -26,8 +28,9 @@ import net.minecraft.world.phys.AABB;
  * <p>Why a cache at all? The client only learns a villager's offers when
  * their trading screen is open (vanilla syncs offers to the open menu, never
  * to the villager entity itself). So whenever a {@link MerchantScreen} shows
- * non-empty offers, the books are stored under the nearest nearby villager -
- * in practice the one being traded with.
+ * non-empty offers, the books are stored under the villager the crosshair is
+ * on, which is the one being traded with. The nearest villager is only the
+ * fallback, since a trading hall packs them close together.
  */
 public final class VillagerCatalog {
     /** How far (blocks) a villager may be to receive freshly opened offers. */
@@ -65,7 +68,9 @@ public final class VillagerCatalog {
         if (player == null || minecraft.level == null) {
             return;
         }
-        AbstractVillager villager = nearestVillager(player);
+        AbstractVillager villager = minecraft.hitResult instanceof EntityHitResult hit
+                && hit.getEntity() instanceof AbstractVillager looked && !looked.isRemoved()
+                ? looked : nearestVillager(player);
         if (villager == null) {
             return;
         }
@@ -94,9 +99,13 @@ public final class VillagerCatalog {
             if (text == null) {
                 continue;
             }
-            books.add(new StoredBook(text.getString(), TradeEnchantText.isMaxLevel(result)));
+            ItemStack price = offer.getCostA();
+            int cost = price.getItem() == Items.EMERALD ? price.getCount() : 0;
+            books.add(new StoredBook(text.getString(), TradeEnchantText.isMaxLevel(result), cost));
         }
         VillagerDataStore.setBooks(id, books);
+        VillagerDataStore.setLocation(id, LibrarianPlaces.currentWorld(minecraft),
+                LibrarianPlaces.dimension(villager), villager.getBlockX(), villager.getBlockY(), villager.getBlockZ());
     }
 
     /** The closest villager near the player, or {@code null} when none. */
