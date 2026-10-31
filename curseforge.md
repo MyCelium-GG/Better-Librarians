@@ -2,12 +2,18 @@
 
 Look at a librarian, see their books and prices on a small card, with no trading screen. Then press K to search everyone you've traded with: type "mending" to see who sells it, cheapest first, and make them glow so you can find them.
 
+![The librarian list searched for mending: two librarians sell it, cheapest first](https://wiki.mycelium-gg.org/betterlibrarians/img/search.png)
+
 - Card with profession, level, each enchanted book and its emerald price
 - Gold for max-level books, white for the rest
 - Librarian list on K or `/librarians`, nearest first, with distance and direction
 - Villagers are catalogued on first trade, and the data survives restarts
 - Kept per world and server, so lists don't mix
 - `/vname <name>` renames the villager you look at (`&` codes and `&#RRGGBB`), `/vname clear` removes it
+
+![A card above a librarian lists Mending, Sharpness V, Efficiency IV and Feather Falling III with emerald prices](https://wiki.mycelium-gg.org/betterlibrarians/img/card.jpg)
+
+![Three villagers with colored floating names](https://wiki.mycelium-gg.org/betterlibrarians/img/names.png)
 
 ## Install
 
