@@ -35,6 +35,7 @@ public final class LibrarianClient {
 
     /** Opens the list next tick, so it survives the chat screen closing after a command. */
     public static int requestList() {
+        my.celium.org.betterlibrarians.LibrarianStats.count("list_command");
         listRequested = true;
         return 1;
     }
@@ -51,6 +52,9 @@ public final class LibrarianClient {
             return;
         }
         while (OPEN_KEY.consumeClick()) {
+            if (!listRequested) {
+                my.celium.org.betterlibrarians.LibrarianStats.count("list_key");
+            }
             listRequested = true;
         }
         if (listRequested) {

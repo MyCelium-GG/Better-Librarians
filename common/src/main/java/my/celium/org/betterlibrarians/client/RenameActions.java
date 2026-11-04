@@ -37,6 +37,7 @@ public final class RenameActions {
             return new Result(0, ColorCodes.parse("&cName has no visible text."), false);
         }
         VillagerDataStore.setName(target, clamped);
+        my.celium.org.betterlibrarians.LibrarianStats.count("rename");
         return new Result(1, Component.literal("Named villager: ").append(ColorCodes.parse(clamped)),
                 true);
     }
@@ -48,6 +49,7 @@ public final class RenameActions {
             return new Result(0, ColorCodes.parse("&cLook at a villager to rename it."), false);
         }
         VillagerDataStore.setName(target, null);
+        my.celium.org.betterlibrarians.LibrarianStats.count("rename_clear");
         return new Result(1, Component.literal("Cleared villager name."), true);
     }
 

@@ -52,6 +52,13 @@ Look at a villager and type:
 Names render in-world above the villager (hidden through walls, fading past
 48 blocks), client-side only — other players need the mod to see them too.
 
+## Anonymous stats
+
+Better Librarians sends anonymous stats (how many librarians get catalogued, which features get used, and errors in its own code) to its FastStats project through
+Mycel. It follows Mycel's choice exactly: the one-time screen in your own
+game, `shareStats` / `shareErrors` in `config/mycel.json` on servers.
+Details: https://wiki.mycelium-gg.org/privacy#stats-betterlibrarians
+
 ## Configuration (`config/betterlibrarians.json`)
 
 | Key | Default | Meaning |

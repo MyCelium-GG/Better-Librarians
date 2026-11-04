@@ -155,6 +155,7 @@ public final class LibrarianScreen extends Screen {
         }
         Minecraft minecraft = Minecraft.getInstance();
         if (LibrarianClient.find(minecraft, UUID.fromString(hit.id()))) {
+            my.celium.org.betterlibrarians.LibrarianStats.count("find");
             onClose();
         } else {
             StoredVillager villager = hit.villager();
@@ -167,6 +168,7 @@ public final class LibrarianScreen extends Screen {
         LibrarianSearch.Hit hit = selected();
         if (hit != null) {
             VillagerDataStore.forgetBooks(UUID.fromString(hit.id()));
+            my.celium.org.betterlibrarians.LibrarianStats.count("forget");
             selectedId = null;
             notice = "";
             refresh();
@@ -341,6 +343,9 @@ public final class LibrarianScreen extends Screen {
 
     @Override
     public void onClose() {
+        if (search != null && !search.getValue().isBlank()) {
+            my.celium.org.betterlibrarians.LibrarianStats.count("search");
+        }
         MycelScreens.open(null);
     }
 }

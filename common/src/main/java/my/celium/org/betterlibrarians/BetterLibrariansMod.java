@@ -19,7 +19,7 @@ import my.celium.org.metadata.ModMetadata;
 public final class BetterLibrariansMod {
     public static final String ID = "betterlibrarians";
 
-    public static final ModMetadata META = ModMetadata.builder(ID, "Better Librarians", "1.2.1")
+    public static final ModMetadata META = ModMetadata.builder(ID, "Better Librarians", "1.2.2")
             .author("MyCelium")
             .website("https://www.curseforge.com/minecraft/mc-mods/better-librarians")
             .updateUrl("https://wiki.mycelium-gg.org/updates/betterlibrarians.json")
@@ -52,6 +52,7 @@ public final class BetterLibrariansMod {
         showUncataloguedHint = builder.booleanValue("showUncataloguedHint", true,
                 "Show a \"trade once to catalogue\" hint for villagers whose books are unknown.");
         config = builder.build();
+        LibrarianStats.start();
     }
 
     public static boolean isModEnabled() {

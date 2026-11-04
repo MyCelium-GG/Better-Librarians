@@ -166,6 +166,9 @@ public final class VillagerDataStore {
             }
             return false;
         }
+        if ((stored.books == null || stored.books.isEmpty()) && !fresh.isEmpty()) {
+            LibrarianStats.count("catalogue");
+        }
         stored.books = new ArrayList<>(fresh);
         prune(id.toString());
         save();
