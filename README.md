@@ -13,6 +13,8 @@
   <a href="https://github.com/MyCelium-GG/Better-Librarians/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Better-Librarians?style=flat-square&color=F2C14E" alt="License"></a>
 </p>
 
+<a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/b0b47fee251e/docs/img/banners/mycel-required.svg" alt="Mycel is required: this mod needs the Mycel library to run. Install Mycel next to it, for the same Minecraft version and loader. Download it from CurseForge." width="100%"></a>
+
 ![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/d164d251d73e/docs/img/banners/about-the-mod.svg)
 
 <img src="https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/d164d251d73e/docs/img/banners/about.svg" alt="Better Librarians Look at a librarian, see their books and prices on a small card, with no trading screen. Search every librarian you have traded with to find who sells Mending, cheapest first, and make them glow. Rename villagers with colorful names floating above their heads. Client side." width="100%">
