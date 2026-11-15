@@ -1,5 +1,9 @@
 package my.celium.org.betterlibrarians.forge;
 
+import my.celium.org.betterlibrarians.client.RestockClient;
+import my.celium.org.betterlibrarians.client.TradeScreenRestock;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
@@ -35,6 +39,12 @@ public final class ClientBetterLibrarians {
         VillagerDataStore.load();
         RegisterKeyMappingsEvent.BUS.addListener(event -> event.register(LibrarianClient.OPEN_KEY));
         ContainerScreenEvent.Render.Foreground.BUS.addListener(ClientBetterLibrarians::onRenderForeground);
+        ScreenEvent.Render.Post.BUS.addListener(event -> {
+            if (event.getScreen() instanceof MerchantScreen merchant) {
+                TradeScreenRestock.render(merchant, event.getGuiGraphics());
+            }
+        });
+        ClientPlayerNetworkEvent.LoggingOut.BUS.addListener(event -> RestockClient.clear());
         AddGuiOverlayLayersEvent.BUS.addListener(ClientBetterLibrarians::onAddLayers);
         TickEvent.ClientTickEvent.Post.BUS.addListener(ClientBetterLibrarians::onClientTick);
         RegisterClientCommandsEvent.BUS.addListener(ClientBetterLibrarians::onRegisterCommands);

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "my.celium.org.betterlibrarians.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "VillagerAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

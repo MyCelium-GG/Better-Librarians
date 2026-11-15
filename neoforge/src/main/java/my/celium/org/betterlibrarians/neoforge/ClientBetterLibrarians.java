@@ -1,5 +1,8 @@
 package my.celium.org.betterlibrarians.neoforge;
 
+import my.celium.org.betterlibrarians.client.RestockClient;
+import my.celium.org.betterlibrarians.client.TradeScreenRestock;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
@@ -32,6 +35,8 @@ public final class ClientBetterLibrarians {
         VillagerDataStore.load();
         modBus.addListener((RegisterKeyMappingsEvent event) -> event.register(LibrarianClient.OPEN_KEY));
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRenderForeground);
+        NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRenderScreen);
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> RestockClient.clear());
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRenderGui);
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onClientTick);
         NeoForge.EVENT_BUS.addListener(ClientBetterLibrarians::onRegisterCommands);
@@ -40,6 +45,12 @@ public final class ClientBetterLibrarians {
     private static void onRenderForeground(ScreenEvent.Render.Foreground event) {
         if (event.getScreen() instanceof MerchantScreen merchant) {
             VillagerCatalog.recordScreen(merchant);
+        }
+    }
+
+    private static void onRenderScreen(ScreenEvent.Render.Post event) {
+        if (event.getScreen() instanceof MerchantScreen merchant) {
+            TradeScreenRestock.render(merchant, event.getGuiGraphics());
         }
     }
 

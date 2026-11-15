@@ -64,22 +64,19 @@ public final class VillagerCatalog {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
-        if (player == null || minecraft.level == null) {
-            return;
-        }
-        AbstractVillager villager = minecraft.hitResult instanceof EntityHitResult hit
-                && hit.getEntity() instanceof AbstractVillager looked && !looked.isRemoved()
-                ? looked : nearestVillager(player);
+        AbstractVillager villager = trader(minecraft);
         if (villager == null) {
             return;
         }
         UUID id = villager.getUUID();
+        recordStock(minecraft, id, offers);
+        // Re-read when the trades or their prices change (prices move with demand and reputation).
+        int signature = signature(offers);
         Integer known = RECORDED_SIZES.get(id);
-        if (known != null && known == offers.size()) {
+        if (known != null && known == signature) {
             return;
         }
-        RECORDED_SIZES.put(id, offers.size());
+        RECORDED_SIZES.put(id, signature);
         boolean showLevel;
         try {
             showLevel = my.celium.org.betterlibrarians.BetterLibrariansMod.showLevel.get();
@@ -106,6 +103,50 @@ public final class VillagerCatalog {
         VillagerDataStore.setBooks(id, books);
         VillagerDataStore.setLocation(id, LibrarianPlaces.currentWorld(minecraft),
                 LibrarianPlaces.dimension(villager), villager.getBlockX(), villager.getBlockY(), villager.getBlockZ());
+    }
+
+    /** Changes when the offers or their prices change. */
+    static int signature(MerchantOffers offers) {
+        int hash = offers.size();
+        for (MerchantOffer offer : offers) {
+            if (offer != null) {
+                hash = hash * 31 + offer.getCostA().getCount();
+                hash = hash * 31 + offer.getResult().getItem().hashCode();
+            }
+        }
+        return hash;
+    }
+
+    /** The villager being traded with: the one under the crosshair, else the nearest. */
+    static AbstractVillager trader(Minecraft minecraft) {
+        LocalPlayer player = minecraft.player;
+        if (player == null || minecraft.level == null) {
+            return null;
+        }
+        return minecraft.hitResult instanceof EntityHitResult hit
+                && hit.getEntity() instanceof AbstractVillager looked && !looked.isRemoved()
+                ? looked : nearestVillager(player);
+    }
+
+    /** Stock counts from the open trading screen, for the restock estimate. */
+    static void recordStock(Minecraft minecraft, UUID id, MerchantOffers offers) {
+        int trades = 0;
+        int soldOut = 0;
+        int used = 0;
+        for (MerchantOffer offer : offers) {
+            if (offer == null) {
+                continue;
+            }
+            trades++;
+            if (offer.isOutOfStock()) {
+                soldOut++;
+            }
+            if (offer.needsRestock()) {
+                used++;
+            }
+        }
+        VillagerDataStore.setStock(id, LibrarianPlaces.currentWorld(minecraft), trades, soldOut, used,
+                minecraft.level.getGameTime());
     }
 
     /** The closest villager near the player, or {@code null} when none. */

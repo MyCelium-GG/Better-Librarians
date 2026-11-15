@@ -83,8 +83,10 @@ public final class LookTitleCard {
         if (!(entityHit.getEntity() instanceof AbstractVillager villager) || villager.isRemoved()) {
             return;
         }
-        // The book card is a librarian feature; other professions show nothing.
-        if (!isLibrarian(villager)) {
+        // Librarians get the full card; other working villagers only their restock timer.
+        boolean librarian = isLibrarian(villager);
+        List<RestockText.Line> restock = restockLines(minecraft, villager);
+        if (!librarian && (restock.isEmpty() || !readFlag(() -> BetterLibrariansMod.restockAllJobs.get(), true))) {
             return;
         }
 
@@ -111,11 +113,15 @@ public final class LookTitleCard {
                     COLOR_NAME_FALLBACK, false, 0));
             lines.add(new Line(professionTitle(villager), COLOR_SUBTITLE, false, 0));
         }
-        if (stored.isEmpty()) {
-            if (!showHint) {
+        if (!librarian) {
+            // Title and timer only.
+        } else if (stored.isEmpty()) {
+            if (!showHint && restock.isEmpty()) {
                 return;
             }
-            lines.add(new Line(Component.literal("Trade once to catalogue books"), COLOR_HINT, false, 0));
+            if (showHint) {
+                lines.add(new Line(Component.literal("Open its trades once to see its books"), COLOR_HINT, false, 0));
+            }
         } else {
             int shown = Math.min(stored.size(), Math.max(1, maxBooks));
             for (int i = 0; i < shown; i++) {
@@ -128,6 +134,10 @@ public final class LookTitleCard {
                 lines.add(new Line(Component.literal("…and " + (stored.size() - shown) + " more"),
                         COLOR_MORE, false, 0));
             }
+        }
+
+        for (RestockText.Line line : restock) {
+            lines.add(new Line(fitWidth(font, Component.literal(line.text()), MAX_LINE_WIDTH), line.color(), false, 0));
         }
 
         int width = 0;
@@ -165,6 +175,23 @@ public final class LookTitleCard {
             }
             y += LINE_H;
         }
+    }
+
+    /** The restock lines for a villager, empty when the timer is off or nothing is known. */
+    static List<RestockText.Line> restockLines(Minecraft minecraft, AbstractVillager villager) {
+        if (!(villager instanceof Villager typed) || villager.isBaby()
+                || !readFlag(() -> BetterLibrariansMod.restockTimer.get(), true)) {
+            return List.of();
+        }
+        String job = professionPath(typed);
+        if ("none".equals(job) || "nitwit".equals(job)) {
+            return List.of();
+        }
+        VillagerDataStore.StoredVillager seen =
+                VillagerDataStore.stock(villager.getUUID(), LibrarianPlaces.currentWorld(minecraft));
+        return RestockText.lines(RestockClient.live(villager.getUUID()),
+                seen == null ? null : new RestockText.Seen(seen.trades, seen.soldOut, seen.used, seen.stockSeenAt),
+                minecraft.level.getOverworldClockTime(), minecraft.level.getGameTime(), job);
     }
 
     /** An item drawn at {@link #ICON} pixels. */

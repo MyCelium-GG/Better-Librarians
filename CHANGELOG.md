@@ -6,6 +6,21 @@ Better Librarians is versioned semantically (`MAJOR.MINOR.PATCH`).
 It runs on Minecraft 26.3, 26.2 and 26.1 (Fabric + Forge + NeoForge, Java 25) and requires
 [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`).
 
+## [1.3.0] - 2026-11-15
+
+### Added
+- Restock timer: the look-at card and the trading screen show which trades are sold out and when the villager restocks next, for example "Restocks in 4:10", "Restocks any moment now" or "Restocked twice today, next in 12:30". Exact when the server has Better Librarians too (always in singleplayer); on other servers an estimate from the time of day and the stock you last saw.
+- Warnings when a villager can't restock: it has no workstation, or it stands too far from it during work hours (a trading hall cell built away from the lectern).
+- The restock timer works for every working villager (farmers, clerics, smiths and so on), not only librarians. Turn that off with `restockAllJobs`.
+- The librarian list shows the selected librarian's stock.
+- New settings `restockTimer` and `restockAllJobs`.
+
+### Changed
+- Book prices on the card and in the list now update when they change (demand, reputation), not only when a villager gets new trades.
+- The hint for unknown librarians now says "Open its trades once to see its books": opening the trading screen is enough.
+- Installed without Mycel, the game still starts: Better Librarians stays off and says in chat that Mycel is missing, with a download link.
+- Optional on servers: a server with the mod sends players who have it the stock of the villagers near them, once a second. It only reads; trades are never changed.
+
 ## [1.2.2] - 2026-11-04
 
 ### Changed

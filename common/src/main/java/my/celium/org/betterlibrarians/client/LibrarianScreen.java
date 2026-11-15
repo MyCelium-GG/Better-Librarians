@@ -1,5 +1,6 @@
 package my.celium.org.betterlibrarians.client;
 
+import my.celium.org.betterlibrarians.BetterLibrariansMod;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -272,6 +273,11 @@ public final class LibrarianScreen extends Screen {
         String place = minecraft.player == null ? "" : LibrarianPlaces.describe(minecraft.player, villager);
         gfx.text(font, place.isEmpty() ? "Trade again to save where they are" : place, x, y + 12, MycelTheme.FAINT);
         int top = y + 26;
+        RestockText.Line stock = stockLine(minecraft, hit);
+        if (stock != null) {
+            gfx.text(font, MycelTheme.fit(font, stock.text(), rightW()), x, y + 23, stock.color());
+            top += 11;
+        }
         int bottom = py() + panelH() - PAD - FlatButton.HEIGHT - (notice.isEmpty() ? 4 : 28);
         String query = search.getValue().trim().toLowerCase(Locale.ROOT);
         int shown = Math.max(0, (bottom - top) / BOOK_H);
@@ -301,6 +307,30 @@ public final class LibrarianScreen extends Screen {
                 gfx.text(font, lines.get(i), x, noticeY + i * 10, MycelTheme.WARN);
             }
         }
+    }
+
+    /** One line about the selected librarian's stock: live when nearby on a server with the mod, else as last seen. */
+    private static RestockText.Line stockLine(Minecraft minecraft, LibrarianSearch.Hit hit) {
+        if (minecraft.level == null || !BetterLibrariansMod.restockTimer.get()) {
+            return null;
+        }
+        UUID id;
+        try {
+            id = UUID.fromString(hit.id());
+        } catch (RuntimeException e) {
+            return null;
+        }
+        StoredVillager seen = VillagerDataStore.stock(id, LibrarianPlaces.currentWorld(minecraft));
+        List<RestockText.Line> lines = RestockText.lines(RestockClient.live(id),
+                seen == null ? null : new RestockText.Seen(seen.trades, seen.soldOut, seen.used, seen.stockSeenAt),
+                minecraft.level.getOverworldClockTime(), minecraft.level.getGameTime(), "librarian");
+        if (lines.isEmpty()) {
+            return null;
+        }
+        if (lines.size() == 1 || lines.get(0).color() == MycelTheme.DIM) {
+            return lines.get(0);
+        }
+        return new RestockText.Line(lines.get(0).text() + " · " + lines.get(1).text(), lines.get(0).color());
     }
 
     @Override

@@ -1,30 +1,35 @@
 package my.celium.org.betterlibrarians.neoforge;
 
-import my.celium.org.client.ClientHooks;
-import my.celium.org.betterlibrarians.BetterLibrariansMod;
-import net.minecraft.client.gui.screens.Screen;
+import my.celium.org.betterlibrarians.MissingMycel;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 /**
- * NeoForge entrypoint: server-safe bootstrap; client hooks (config screen +
- * trade overlay) are isolated in {@link ClientBetterLibrarians} so dedicated
- * servers never load client classes.
+ * NeoForge entrypoint. Without Mycel the game still starts: Better Librarians stays off and says so in
+ * chat. Everything that needs Mycel lives in {@link NeoForgeSetup}; client hooks in
+ * {@link ClientBetterLibrarians}, so dedicated servers never load client classes.
  */
-@Mod(BetterLibrariansMod.ID)
+@Mod("betterlibrarians")
 public final class BetterLibrariansNeoForge {
-    public BetterLibrariansNeoForge(IEventBus modBus,
-            @SuppressWarnings("unused") ModContainer container) {
-        BetterLibrariansMod.init();
-        if (FMLEnvironment.getDist().isClient()) {
-            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,
-                    () -> (ModContainer ignored, Screen parent) -> ClientHooks.createConfigScreen(parent,
-                            BetterLibrariansMod.ID));
-            ClientBetterLibrarians.register(modBus);
+    public BetterLibrariansNeoForge(IEventBus modBus, @SuppressWarnings("unused") ModContainer container) {
+        if (!ModList.get().isLoaded("mycel")) {
+            MissingMycel.logOnce();
+            NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+                if (event.getEntity() instanceof ServerPlayer player) {
+                    MissingMycel.tell(player);
+                }
+            });
+            if (FMLEnvironment.getDist().isClient()) {
+                ClientMissingMycel.register();
+            }
+            return;
         }
+        NeoForgeSetup.start(modBus);
     }
 }

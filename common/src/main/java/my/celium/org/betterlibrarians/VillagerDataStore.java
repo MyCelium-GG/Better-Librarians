@@ -75,9 +75,16 @@ public final class VillagerDataStore {
         public int x;
         public int y;
         public int z;
+        /** Stock seen in the trading screen: trades, sold out, used since the last restock, and when (game time). */
+        public int trades;
+        public int soldOut;
+        public int used;
+        public long stockSeenAt = -1;
+        /** The world the stock was seen in, since game time differs per world. */
+        public String stockWorld;
 
         public boolean isEmpty() {
-            return (name == null || name.isBlank()) && (books == null || books.isEmpty());
+            return (name == null || name.isBlank()) && (books == null || books.isEmpty()) && stockSeenAt < 0;
         }
     }
 
@@ -188,6 +195,38 @@ public final class VillagerDataStore {
         stored.y = y;
         stored.z = z;
         save();
+    }
+
+    /**
+     * Remembers the stock seen in the trading screen. Persists only when the counts changed, so it can
+     * run every frame while the screen is open.
+     */
+    public static synchronized void setStock(UUID id, String world, int trades, int soldOut, int used, long gameTime) {
+        if (id == null) {
+            return;
+        }
+        StoredVillager stored = DATA.computeIfAbsent(id.toString(), key -> new StoredVillager());
+        boolean same = stored.trades == trades && stored.soldOut == soldOut && stored.used == used
+                && Objects.equals(stored.stockWorld, world) && stored.stockSeenAt >= 0;
+        if (same) {
+            return;
+        }
+        stored.trades = trades;
+        stored.soldOut = soldOut;
+        stored.used = used;
+        stored.stockSeenAt = gameTime;
+        stored.stockWorld = world;
+        prune(id.toString());
+        save();
+    }
+
+    /** The stock seen for a villager in this world, or {@code null}. */
+    public static synchronized StoredVillager stock(UUID id, String world) {
+        StoredVillager stored = id == null ? null : DATA.get(id.toString());
+        if (stored == null || stored.stockSeenAt < 0 || !Objects.equals(stored.stockWorld, world)) {
+            return null;
+        }
+        return stored;
     }
 
     /** Forgets a villager's books and location, keeping a rename. Persists. */
