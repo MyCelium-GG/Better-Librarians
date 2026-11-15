@@ -19,7 +19,7 @@
 
 <img src="https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/ca5690e404b3/docs/img/banners/about.svg" alt="Better Librarians Look at a librarian, see their books and prices on a small card, with no trading screen. See which trades are sold out and exactly when a villager restocks. Search every librarian you have traded with to find who sells Mending, cheapest first, and make them glow. Rename villagers with colorful names floating above their heads." width="100%">
 
-![A librarian's card: Mending 24 and Sharpness V 31 emeralds, 2 trades sold out, Restocks in 0:43](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-card.png)
+![A librarian's card: Mending 24 and Sharpness V 31 emeralds, 2 trades sold out, Restocks in 0:43](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-card.png?v=130)
 
 ![The look-at card](https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/ca5690e404b3/docs/img/banners/the-look-at-card.svg)
 
@@ -29,9 +29,9 @@
 
 <img src="https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/ca5690e404b3/docs/img/banners/the-restock-timer-box.svg" alt="The card and the trading screen show which trades are sold out and when the villager restocks next: &quot;Restocks in 4:10&quot;, &quot;Restocks any moment now&quot; or &quot;Restocked twice today, next in 12:30&quot;. It works for every working villager, not only librarians. Exact with the mod on the server: Always in singleplayer. The server sends the stock of the villagers near you once a second. An estimate elsewhere: On s" width="100%">
 
-![A librarian whose lectern is 4 blocks away: Can't restock here](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-too-far.png)
+![A librarian whose lectern is 4 blocks away: Can't restock here](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-too-far.png?v=130)
 
-![The trading screen with 2 trades sold out and Restocks in 0:45 under it](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-trades.png)
+![The trading screen with 2 trades sold out and Restocks in 0:45 under it](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-trades.png?v=130)
 
 ![The librarian list](https://raw.githubusercontent.com/MyCelium-GG/Better-Librarians/ca5690e404b3/docs/img/banners/the-librarian-list.svg)
 

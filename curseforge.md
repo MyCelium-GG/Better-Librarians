@@ -4,9 +4,9 @@ Look at a librarian, see their books and prices on a small card, with no trading
 
 **New in 1.3.0, the restock timer:** see which trades are sold out and exactly when a villager restocks, right on the card and under the trading screen. It also warns you when a villager can't restock at all, like a trading hall cell built too far from its lectern. Works for every working villager, not only librarians.
 
-![A librarian's card: Mending 24 and Sharpness V 31 emeralds, 2 trades sold out, Restocks in 0:43](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-card.png)
+![A librarian's card: Mending 24 and Sharpness V 31 emeralds, 2 trades sold out, Restocks in 0:43](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-card.png?v=130)
 
-![A librarian whose lectern is 4 blocks away: Can't restock here](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-too-far.png)
+![A librarian whose lectern is 4 blocks away: Can't restock here](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-too-far.png?v=130)
 
 - Restock timer: sold-out trades and the time until the next restock, exact with the mod on the server (always in singleplayer), an estimate on other servers
 - Warnings when a villager has no workstation or stands too far from it
@@ -17,7 +17,7 @@ Look at a librarian, see their books and prices on a small card, with no trading
 - Kept per world and server, so lists don't mix
 - `/vname <name>` renames the villager you look at (`&` codes and `&#RRGGBB`), `/vname clear` removes it
 
-![The trading screen with "2 trades sold out, Restocks in 0:45" under it](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-trades.png)
+![The trading screen with "2 trades sold out, Restocks in 0:45" under it](https://wiki.mycelium-gg.org/betterlibrarians/img/restock-trades.png?v=130)
 
 ![The librarian list searched for mending: two librarians sell it, cheapest first](https://wiki.mycelium-gg.org/betterlibrarians/img/search.png)
 
