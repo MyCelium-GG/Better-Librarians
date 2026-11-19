@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Aanvultimer",
   "betterlibrarians.config.restockTimer.desc": "Tonen wanneer dorpelingen aanvullen, op de infokaart en onder het ruilscherm. Exact als de server Better Librarians ook heeft (altijd in singleplayer), anders een schatting.",
   "betterlibrarians.config.restockAllJobs": "Timer voor alle beroepen",
-  "betterlibrarians.config.restockAllJobs.desc": "De aanvultimer tonen voor elke werkende dorpeling, niet alleen bibliothecarissen."
+  "betterlibrarians.config.restockAllJobs.desc": "De aanvultimer tonen voor elke werkende dorpeling, niet alleen bibliothecarissen.",
+  "betterlibrarians.count.one": "%s bibliothecaris",
+  "betterlibrarians.count": "%s bibliothecarissen"
 }

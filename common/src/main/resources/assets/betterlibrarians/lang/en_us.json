@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Restock timer",
   "betterlibrarians.config.restockTimer.desc": "Show when villagers restock, on the look-at card and under the trading screen. Exact when the server has Better Librarians too (always in singleplayer), an estimate otherwise.",
   "betterlibrarians.config.restockAllJobs": "Restock timer for all jobs",
-  "betterlibrarians.config.restockAllJobs.desc": "Show the restock timer for every working villager, not only librarians."
+  "betterlibrarians.config.restockAllJobs.desc": "Show the restock timer for every working villager, not only librarians.",
+  "betterlibrarians.count.one": "%s librarian",
+  "betterlibrarians.count": "%s librarians"
 }

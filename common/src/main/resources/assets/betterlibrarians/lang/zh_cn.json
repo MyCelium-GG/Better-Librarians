@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "补货计时",
   "betterlibrarians.config.restockTimer.desc": "在信息卡和交易界面下方显示村民何时补货。服务器也装有 Better Librarians 时为准确值（单人游戏总是），否则为估算。",
   "betterlibrarians.config.restockAllJobs": "所有职业的计时",
-  "betterlibrarians.config.restockAllJobs.desc": "为所有有职业的村民显示补货计时，而不只是图书管理员。"
+  "betterlibrarians.config.restockAllJobs.desc": "为所有有职业的村民显示补货计时，而不只是图书管理员。",
+  "betterlibrarians.count.one": "%s 位图书管理员",
+  "betterlibrarians.count": "%s 位图书管理员"
 }

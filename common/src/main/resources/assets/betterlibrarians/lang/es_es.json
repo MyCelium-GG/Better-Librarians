@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Temporizador de reposición",
   "betterlibrarians.config.restockTimer.desc": "Mostrar cuándo reponen los aldeanos, en la tarjeta y bajo la pantalla de comercio. Exacto si el servidor también tiene Better Librarians (siempre en un jugador), estimado si no.",
   "betterlibrarians.config.restockAllJobs": "Temporizador para todos los oficios",
-  "betterlibrarians.config.restockAllJobs.desc": "Mostrar el temporizador para todo aldeano con oficio, no solo bibliotecarios."
+  "betterlibrarians.config.restockAllJobs.desc": "Mostrar el temporizador para todo aldeano con oficio, no solo bibliotecarios.",
+  "betterlibrarians.count.one": "%s bibliotecario",
+  "betterlibrarians.count": "%s bibliotecarios"
 }

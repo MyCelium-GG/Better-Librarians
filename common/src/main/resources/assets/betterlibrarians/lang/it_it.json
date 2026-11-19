@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Timer di rifornimento",
   "betterlibrarians.config.restockTimer.desc": "Mostra quando gli abitanti si riforniscono, sulla scheda e sotto la schermata di scambio. Esatto se anche il server ha Better Librarians (sempre in giocatore singolo), altrimenti stimato.",
   "betterlibrarians.config.restockAllJobs": "Timer per tutti i mestieri",
-  "betterlibrarians.config.restockAllJobs.desc": "Mostra il timer per ogni abitante che lavora, non solo i bibliotecari."
+  "betterlibrarians.config.restockAllJobs.desc": "Mostra il timer per ogni abitante che lavora, non solo i bibliotecari.",
+  "betterlibrarians.count.one": "%s bibliotecario",
+  "betterlibrarians.count": "%s bibliotecari"
 }

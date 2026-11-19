@@ -113,7 +113,7 @@ public final class LibrarianScreen extends Screen {
         forgetButton = new FlatButton(rightX() + buttonW + 4, bottom, buttonW, Component.literal(tr("button.forget")), false, this::forgetSelected);
         addRenderableWidget(findButton);
         addRenderableWidget(forgetButton);
-        addRenderableWidget(new FlatButton(rightX() + (buttonW + 4) * 2, bottom, buttonW, Component.literal("Done"), false, this::onClose));
+        addRenderableWidget(new FlatButton(rightX() + (buttonW + 4) * 2, bottom, buttonW, Component.translatable("gui.done"), false, this::onClose));
         refresh();
     }
 
@@ -190,7 +190,7 @@ public final class LibrarianScreen extends Screen {
         gfx.fill(x0 + 2, y0 + 2, x1 - 2, y0 + TITLE_BAR, MycelTheme.ACCENT_DARK);
         gfx.fill(x0 + 2, y0 + TITLE_BAR, x1 - 2, y0 + TITLE_BAR + 1, MycelTheme.HEADER_EDGE);
         gfx.text(font, "Better Librarians", x0 + PAD, y0 + 7, MycelTheme.HEADING);
-        String count = rows.size() + (rows.size() == 1 ? " librarian" : " librarians");
+        String count = tr(rows.size() == 1 ? "count.one" : "count", rows.size());
         gfx.text(font, count, x1 - PAD - font.width(count), y0 + 7, MycelTheme.HEADING);
 
         int fieldY = y0 + TITLE_BAR + PAD;

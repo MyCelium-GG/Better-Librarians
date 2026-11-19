@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Timer de reabastecimento",
   "betterlibrarians.config.restockTimer.desc": "Mostrar quando os aldeões reabastecem, no cartão e abaixo da tela de troca. Exato se o servidor também tem Better Librarians (sempre no singleplayer), estimado caso contrário.",
   "betterlibrarians.config.restockAllJobs": "Timer para todas as profissões",
-  "betterlibrarians.config.restockAllJobs.desc": "Mostrar o timer para todo aldeão com profissão, não só bibliotecários."
+  "betterlibrarians.config.restockAllJobs.desc": "Mostrar o timer para todo aldeão com profissão, não só bibliotecários.",
+  "betterlibrarians.count.one": "%s bibliotecário",
+  "betterlibrarians.count": "%s bibliotecários"
 }

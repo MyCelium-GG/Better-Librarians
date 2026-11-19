@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Licznik uzupełnień",
   "betterlibrarians.config.restockTimer.desc": "Pokazuj, kiedy osadnicy uzupełniają zapasy, na karcie i pod oknem handlu. Dokładnie, gdy serwer też ma Better Librarians (w grze jednoosobowej zawsze), w przeciwnym razie szacunkowo.",
   "betterlibrarians.config.restockAllJobs": "Licznik dla wszystkich zawodów",
-  "betterlibrarians.config.restockAllJobs.desc": "Pokazuj licznik dla każdego pracującego osadnika, nie tylko bibliotekarzy."
+  "betterlibrarians.config.restockAllJobs.desc": "Pokazuj licznik dla każdego pracującego osadnika, nie tylko bibliotekarzy.",
+  "betterlibrarians.count.one": "bibliotekarze: %s",
+  "betterlibrarians.count": "bibliotekarze: %s"
 }

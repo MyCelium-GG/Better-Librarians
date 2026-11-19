@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Auffüll-Timer",
   "betterlibrarians.config.restockTimer.desc": "Zeigen, wann Dorfbewohner auffüllen, auf der Infokarte und unter dem Handelsfenster. Genau, wenn der Server Better Librarians auch hat (im Einzelspieler immer), sonst geschätzt.",
   "betterlibrarians.config.restockAllJobs": "Timer für alle Berufe",
-  "betterlibrarians.config.restockAllJobs.desc": "Den Auffüll-Timer für alle arbeitenden Dorfbewohner zeigen, nicht nur für Bibliothekare."
+  "betterlibrarians.config.restockAllJobs.desc": "Den Auffüll-Timer für alle arbeitenden Dorfbewohner zeigen, nicht nur für Bibliothekare.",
+  "betterlibrarians.count.one": "%s Bibliothekar",
+  "betterlibrarians.count": "%s Bibliothekare"
 }

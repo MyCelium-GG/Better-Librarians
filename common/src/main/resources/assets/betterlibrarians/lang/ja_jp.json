@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "補充タイマー",
   "betterlibrarians.config.restockTimer.desc": "村人の補充時刻を情報カードと取引画面の下に表示します。サーバーにも Better Librarians があれば正確（シングルプレイでは常に）、なければ推定です。",
   "betterlibrarians.config.restockAllJobs": "全職業のタイマー",
-  "betterlibrarians.config.restockAllJobs.desc": "司書だけでなく、職業を持つすべての村人に補充タイマーを表示します。"
+  "betterlibrarians.config.restockAllJobs.desc": "司書だけでなく、職業を持つすべての村人に補充タイマーを表示します。",
+  "betterlibrarians.count.one": "司書 %s 人",
+  "betterlibrarians.count": "司書 %s 人"
 }

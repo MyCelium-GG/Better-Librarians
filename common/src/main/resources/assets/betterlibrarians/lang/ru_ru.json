@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Таймер пополнения",
   "betterlibrarians.config.restockTimer.desc": "Показывать, когда жители пополняют запасы, на карточке и под окном торговли. Точно, если на сервере тоже есть Better Librarians (в одиночной игре всегда), иначе оценка.",
   "betterlibrarians.config.restockAllJobs": "Таймер для всех профессий",
-  "betterlibrarians.config.restockAllJobs.desc": "Показывать таймер для всех работающих жителей, а не только библиотекарей."
+  "betterlibrarians.config.restockAllJobs.desc": "Показывать таймер для всех работающих жителей, а не только библиотекарей.",
+  "betterlibrarians.count.one": "библиотекарей: %s",
+  "betterlibrarians.count": "библиотекарей: %s"
 }

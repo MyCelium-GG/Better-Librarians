@@ -55,5 +55,7 @@
   "betterlibrarians.config.restockTimer": "Minuteur de réapprovisionnement",
   "betterlibrarians.config.restockTimer.desc": "Afficher quand les villageois se réapprovisionnent, sur la carte et sous l'écran d'échange. Exact si le serveur a aussi Better Librarians (toujours en solo), estimé sinon.",
   "betterlibrarians.config.restockAllJobs": "Minuteur pour tous les métiers",
-  "betterlibrarians.config.restockAllJobs.desc": "Afficher le minuteur pour tout villageois qui travaille, pas seulement les bibliothécaires."
+  "betterlibrarians.config.restockAllJobs.desc": "Afficher le minuteur pour tout villageois qui travaille, pas seulement les bibliothécaires.",
+  "betterlibrarians.count.one": "%s bibliothécaire",
+  "betterlibrarians.count": "%s bibliothécaires"
 }
