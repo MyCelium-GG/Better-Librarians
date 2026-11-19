@@ -35,20 +35,21 @@ final class LibrarianPlaces {
         }
         if (!villager.dimension.equals(dimension(player))) {
             return switch (villager.dimension) {
-                case "minecraft:the_nether" -> "In the Nether";
-                case "minecraft:the_end" -> "In the End";
-                case "minecraft:overworld" -> "In the Overworld";
-                default -> "In another dimension";
+                case "minecraft:the_nether" -> LibrarianScreen.tr("place.nether");
+                case "minecraft:the_end" -> LibrarianScreen.tr("place.end");
+                case "minecraft:overworld" -> LibrarianScreen.tr("place.overworld");
+                default -> LibrarianScreen.tr("place.other");
             };
         }
         double dx = villager.x + 0.5 - player.getX();
         double dz = villager.z + 0.5 - player.getZ();
         long distance = Math.round(Math.sqrt(dx * dx + dz * dz));
         if (distance < 2) {
-            return "Right here";
+            return LibrarianScreen.tr("place.here");
         }
         int sector = (int) Math.floorMod(Math.round(Math.toDegrees(Math.atan2(-dx, dz)) / 45), 8L);
-        return distance + " m " + COMPASS[sector];
+        String[] compass = LibrarianScreen.tr("place.compass").split(",");
+        return LibrarianScreen.tr("place.distance", distance, (compass.length == 8 ? compass : COMPASS)[sector].trim());
     }
 
     /** Sort key: blocks away, unknown and other dimensions last. */

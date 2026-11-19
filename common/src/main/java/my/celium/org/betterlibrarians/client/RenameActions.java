@@ -30,15 +30,15 @@ public final class RenameActions {
     public static Result setName(String raw) {
         UUID target = crosshairTarget();
         if (target == null) {
-            return new Result(0, ColorCodes.parse("&cLook at a villager to rename it."), false);
+            return new Result(0, red("rename.look"), false);
         }
         String clamped = ColorCodes.clamp(raw, MAX_NAME_LENGTH);
         if (clamped.isEmpty() || ColorCodes.parse(clamped).getString().isBlank()) {
-            return new Result(0, ColorCodes.parse("&cName has no visible text."), false);
+            return new Result(0, red("rename.empty"), false);
         }
         VillagerDataStore.setName(target, clamped);
         my.celium.org.betterlibrarians.LibrarianStats.count("rename");
-        return new Result(1, Component.literal("Named villager: ").append(ColorCodes.parse(clamped)),
+        return new Result(1, Component.translatable("betterlibrarians.rename.done", ColorCodes.parse(clamped)),
                 true);
     }
 
@@ -46,11 +46,11 @@ public final class RenameActions {
     public static Result clearName() {
         UUID target = crosshairTarget();
         if (target == null) {
-            return new Result(0, ColorCodes.parse("&cLook at a villager to rename it."), false);
+            return new Result(0, red("rename.look"), false);
         }
         VillagerDataStore.setName(target, null);
         my.celium.org.betterlibrarians.LibrarianStats.count("rename_clear");
-        return new Result(1, Component.literal("Cleared villager name."), true);
+        return new Result(1, Component.translatable("betterlibrarians.rename.cleared"), true);
     }
 
     static UUID crosshairTarget() {
@@ -69,5 +69,9 @@ public final class RenameActions {
         } catch (RuntimeException e) {
             return null;
         }
+    }
+
+    private static Component red(String path) {
+        return Component.translatable("betterlibrarians." + path).withStyle(net.minecraft.ChatFormatting.RED);
     }
 }

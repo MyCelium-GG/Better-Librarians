@@ -48,50 +48,50 @@ public final class RestockText {
     private static void exact(List<Line> out, RestockInfo info, long clock, String profession) {
         String station = station(info.workBlock(), profession);
         if (info.used() == 0) {
-            out.add(new Line("All trades in stock", MycelTheme.DIM));
+            out.add(new Line(t("in_stock"), MycelTheme.DIM));
             return;
         }
         if (info.soldOut() > 0) {
             out.add(new Line(soldOut(info.soldOut(), info.trades()), MycelTheme.WARN));
         }
         if (!info.workstation()) {
-            out.add(new Line("No " + bare(station) + ": it can't restock", MycelTheme.BAD));
+            out.add(new Line(t("no_station", station), MycelTheme.BAD));
             return;
         }
         if (!info.atWorkstation() && info.distance() >= 2 && RestockRules.isWorkTime(clock)) {
             // Working hours but away from the workstation: in a trading hall cell this never changes.
-            out.add(new Line("Can't restock here: " + station + " is " + info.distance() + " blocks away", MycelTheme.WARN));
+            out.add(new Line(t("too_far", station, info.distance()), MycelTheme.WARN));
             return;
         }
         long wait = RestockRules.untilAllowed(clock, info.restocksToday(), info.sinceRestock(), info.newDayPending());
         boolean twice = info.restocksToday() >= RestockRules.MAX_PER_DAY && !info.newDayPending();
         if (wait > 0) {
-            out.add(new Line((twice ? "Restocked twice today, next in " : "Restocks in ") + time(wait), MycelTheme.TEXT));
+            out.add(new Line(t(twice ? "twice" : "in", time(wait)), MycelTheme.TEXT));
         } else if (info.atWorkstation()) {
-            out.add(new Line("Restocks any moment now", MycelTheme.TEXT));
+            out.add(new Line(t("any_moment"), MycelTheme.TEXT));
         } else {
-            out.add(new Line("Restocks once it is back at " + station, MycelTheme.TEXT));
+            out.add(new Line(t("back_at", station), MycelTheme.TEXT));
         }
     }
 
     private static void estimate(List<Line> out, Seen seen, long clock, long now, String profession) {
         String station = station("", profession);
         if (seen.used() == 0) {
-            out.add(new Line("All trades were in stock", MycelTheme.DIM));
+            out.add(new Line(t("were_in_stock"), MycelTheme.DIM));
             return;
         }
         if (seen.soldOut() > 0) {
-            out.add(new Line(soldOut(seen.soldOut(), seen.trades()) + " when you traded", MycelTheme.WARN));
+            out.add(new Line(t("when_traded", soldOut(seen.soldOut(), seen.trades())), MycelTheme.WARN));
         }
         long since = now - seen.seenAt();
         if (since > 0 && workedSince(clock, since)) {
-            out.add(new Line("Has worked since then, probably restocked", MycelTheme.TEXT));
+            out.add(new Line(t("probably"), MycelTheme.TEXT));
         } else if (RestockRules.isWorkTime(clock)) {
-            out.add(new Line("Restocks while it works at " + station, MycelTheme.TEXT));
+            out.add(new Line(t("while_works", station), MycelTheme.TEXT));
         } else {
-            out.add(new Line("Restocks when work starts, in " + time(RestockRules.untilWork(clock)), MycelTheme.TEXT));
+            out.add(new Line(t("work_starts", time(RestockRules.untilWork(clock))), MycelTheme.TEXT));
         }
-        out.add(new Line("Estimate: the server doesn't have Better Librarians", MycelTheme.FAINT));
+        out.add(new Line(t("estimate"), MycelTheme.FAINT));
     }
 
     /** Whether a full chance to restock (at least a minute of work time) lies between then and now. */
@@ -110,12 +110,12 @@ public final class RestockText {
 
     static String soldOut(int soldOut, int trades) {
         if (soldOut == 1) {
-            return trades > 1 ? "1 trade sold out" : "Sold out";
+            return t(trades > 1 ? "sold_out.one" : "sold_out.all");
         }
-        return soldOut + " trades sold out";
+        return t("sold_out", soldOut);
     }
 
-    /** "its lectern", from the workstation's block or the profession. */
+    /** The workstation's name, from its block or the profession. */
     static String station(String blockId, String profession) {
         String name = null;
         if (blockId != null && !blockId.isEmpty()) {
@@ -130,13 +130,14 @@ public final class RestockText {
             }
         }
         if (name == null) {
-            name = "librarian".equals(profession) ? "lectern" : "workstation";
+            name = "librarian".equals(profession)
+                    ? net.minecraft.network.chat.Component.translatable("block.minecraft.lectern").getString() : t("workstation");
         }
-        return "its " + name.toLowerCase(Locale.ROOT);
+        return name;
     }
 
-    private static String bare(String station) {
-        return station.startsWith("its ") ? station.substring(4) : station;
+    private static String t(String path, Object... args) {
+        return net.minecraft.client.resources.language.I18n.get("betterlibrarians.restock." + path, args);
     }
 
     /** Ticks as real time: "4:05", "0:12". */

@@ -98,10 +98,10 @@ public final class LibrarianScreen extends Screen {
 
     @Override
     protected void init() {
-        search = new EditBox(font, listX() + 4, py() + TITLE_BAR + PAD + 3, LIST_W - 8, 9, Component.literal("Search books"));
+        search = new EditBox(font, listX() + 4, py() + TITLE_BAR + PAD + 3, LIST_W - 8, 9, Component.literal(tr("search")));
         search.setBordered(false);
         search.setMaxLength(48);
-        search.setHint(MycelTheme.colored("Search a book, e.g. mending", MycelTheme.FAINT));
+        search.setHint(MycelTheme.colored(MycelTheme.fit(font, tr("search.hint"), LIST_W - 10), MycelTheme.FAINT));
         search.setResponder(text -> {
             scroll = 0;
             refresh();
@@ -109,8 +109,8 @@ public final class LibrarianScreen extends Screen {
         addRenderableWidget(search);
         int bottom = py() + panelH() - PAD - FlatButton.HEIGHT;
         int buttonW = (rightW() - 8) / 3;
-        findButton = new FlatButton(rightX(), bottom, buttonW, Component.literal("Find"), true, this::findSelected);
-        forgetButton = new FlatButton(rightX() + buttonW + 4, bottom, buttonW, Component.literal("Forget"), false, this::forgetSelected);
+        findButton = new FlatButton(rightX(), bottom, buttonW, Component.literal(tr("button.find")), true, this::findSelected);
+        forgetButton = new FlatButton(rightX() + buttonW + 4, bottom, buttonW, Component.literal(tr("button.forget")), false, this::forgetSelected);
         addRenderableWidget(findButton);
         addRenderableWidget(forgetButton);
         addRenderableWidget(new FlatButton(rightX() + (buttonW + 4) * 2, bottom, buttonW, Component.literal("Done"), false, this::onClose));
@@ -160,8 +160,8 @@ public final class LibrarianScreen extends Screen {
             onClose();
         } else {
             StoredVillager villager = hit.villager();
-            notice = villager.dimension == null ? "Too far away to glow. Trade with them again to save where they are."
-                    : "Too far away to glow. Last seen at " + villager.x + " " + villager.y + " " + villager.z + ".";
+            notice = villager.dimension == null ? tr("notice.far_unknown")
+                    : tr("notice.far", villager.x + " " + villager.y + " " + villager.z);
         }
     }
 
@@ -177,7 +177,7 @@ public final class LibrarianScreen extends Screen {
     }
 
     private String displayName(StoredVillager villager) {
-        return villager.name == null || villager.name.isBlank() ? "Librarian" : ColorCodes.parse(villager.name).getString();
+        return villager.name == null || villager.name.isBlank() ? Component.translatable("entity.minecraft.villager.librarian").getString() : ColorCodes.parse(villager.name).getString();
     }
 
     @Override
@@ -208,11 +208,11 @@ public final class LibrarianScreen extends Screen {
         gfx.fill(x, y0, x + LIST_W, y0 + h, MycelTheme.BORDER);
         gfx.fill(x + 1, y0 + 1, x + LIST_W - 1, y0 + h - 1, MycelTheme.SURFACE);
         if (rows.isEmpty()) {
-            String[] lines = search.getValue().isBlank()
-                    ? new String[] {"No librarians yet.", "Trade with one once", "and they appear here."}
-                    : new String[] {"Nobody you traded with", "sells that."};
-            for (int i = 0; i < lines.length; i++) {
-                gfx.text(font, lines[i], x + 6, y0 + 6 + i * 11, MycelTheme.DIM);
+            int ly = y0 + 6;
+            for (net.minecraft.util.FormattedCharSequence line : font.split(
+                    Component.literal(tr(search.getValue().isBlank() ? "list.empty" : "list.no_match")), LIST_W - 12)) {
+                gfx.text(font, line, x + 6, ly, MycelTheme.DIM);
+                ly += 11;
             }
             return;
         }
@@ -263,15 +263,18 @@ public final class LibrarianScreen extends Screen {
         int y = py() + TITLE_BAR + PAD;
         LibrarianSearch.Hit hit = selected();
         if (hit == null) {
-            gfx.text(font, "Your librarians show up here", x, y + 3, MycelTheme.TEXT);
-            gfx.text(font, "after you trade with them.", x, y + 14, MycelTheme.TEXT);
+            int ly = y + 3;
+            for (net.minecraft.util.FormattedCharSequence line : font.split(Component.literal(tr("detail.empty")), rightW())) {
+                gfx.text(font, line, x, ly, MycelTheme.TEXT);
+                ly += 11;
+            }
             return;
         }
         StoredVillager villager = hit.villager();
         gfx.text(font, MycelTheme.fit(font, displayName(villager), rightW()), x, y + 1, MycelTheme.HEADING);
         Minecraft minecraft = Minecraft.getInstance();
         String place = minecraft.player == null ? "" : LibrarianPlaces.describe(minecraft.player, villager);
-        gfx.text(font, place.isEmpty() ? "Trade again to save where they are" : place, x, y + 12, MycelTheme.FAINT);
+        gfx.text(font, MycelTheme.fit(font, place.isEmpty() ? tr("detail.no_place") : place, rightW()), x, y + 12, MycelTheme.FAINT);
         int top = y + 26;
         RestockText.Line stock = stockLine(minecraft, hit);
         if (stock != null) {
@@ -377,5 +380,10 @@ public final class LibrarianScreen extends Screen {
             my.celium.org.betterlibrarians.LibrarianStats.count("search");
         }
         MycelScreens.open(null);
+    }
+
+    /** A text of this mod in the game's language. */
+    static String tr(String path, Object... args) {
+        return net.minecraft.client.resources.language.I18n.get("betterlibrarians." + path, args);
     }
 }

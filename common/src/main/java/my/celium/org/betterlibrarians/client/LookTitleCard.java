@@ -120,7 +120,7 @@ public final class LookTitleCard {
                 return;
             }
             if (showHint) {
-                lines.add(new Line(Component.literal("Open its trades once to see its books"), COLOR_HINT, false, 0));
+                lines.add(new Line(Component.translatable("betterlibrarians.card.hint"), COLOR_HINT, false, 0));
             }
         } else {
             int shown = Math.min(stored.size(), Math.max(1, maxBooks));
@@ -131,7 +131,7 @@ public final class LookTitleCard {
                         color, true, book.cost));
             }
             if (stored.size() > shown) {
-                lines.add(new Line(Component.literal("…and " + (stored.size() - shown) + " more"),
+                lines.add(new Line(Component.translatable("betterlibrarians.card.more", stored.size() - shown),
                         COLOR_MORE, false, 0));
             }
         }
